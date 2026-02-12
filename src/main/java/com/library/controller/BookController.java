@@ -2,7 +2,7 @@ package com.library.controller;
 
 import com.library.model.Book;
 import com.library.repository.BookRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,8 +11,11 @@ import java.util.List;
 @RequestMapping("/api/books")
 public class BookController {
     
-    @Autowired
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
+    
+    public BookController(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
     
     @GetMapping
     public List<Book> getAllBooks() {
@@ -25,7 +28,9 @@ public class BookController {
     }
     
     @GetMapping("/{id}")
-    public Book getBookById(@PathVariable Long id) {
-        return bookRepository.findById(id).orElse(null);
+    public ResponseEntity<Book> getBookById(@PathVariable Long id) {
+        return bookRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
