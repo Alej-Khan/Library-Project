@@ -2,6 +2,8 @@ package com.library.config;
 
 import com.library.entity.Usuario;
 import com.library.repository.UsuarioRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class DataInitializer {
+
+    private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
 
     @Bean
     public CommandLineRunner initData(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
@@ -21,7 +25,7 @@ public class DataInitializer {
                 bibliotecario.setPassword(passwordEncoder.encode("password123"));
                 bibliotecario.setRol("BIBLIOTECARIO");
                 usuarioRepository.save(bibliotecario);
-                System.out.println("Bibliotecario user created: username=bibliotecario, password=password123");
+                logger.info("Bibliotecario user created: username=bibliotecario, password=password123");
             }
 
             // Create a miembro user if not exists
@@ -31,7 +35,7 @@ public class DataInitializer {
                 miembro.setPassword(passwordEncoder.encode("password123"));
                 miembro.setRol("MIEMBRO");
                 usuarioRepository.save(miembro);
-                System.out.println("Miembro user created: username=miembro, password=password123");
+                logger.info("Miembro user created: username=miembro, password=password123");
             }
         };
     }
