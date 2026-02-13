@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/api/libros").permitAll()
+                        .requestMatchers("/api/libros", "/api/libros/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
